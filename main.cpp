@@ -1,40 +1,28 @@
 #include "functions.h"
+using namespace std;
 
-const string DIRECTORY_PATH = "./";  // Directory path where files will be saved
 
-int main() {
-    ofstream inputFile(DIRECTORY_PATH + "input.txt", ios::app);
+int main()
+{
+    string InFilename;
+    char check;
+    cout << "Enter file name: ";
+    cin >> InFilename;
+    string filename = InFilename + ".bin";
 
-    if (!inputFile) {
-        cerr << "Failed to open input.txt\n";
-        return 1;
-    }
+    do
+    {
+        add_conversation(filename);
+        cout << "Do you want to add another call?" << endl;
+        check = getch();
 
-    addInformation(inputFile);
+    } while (check == '\r');
 
-    inputFile.close();
-    createOutputFiles();
+    read_info_from_file(filename);
 
-    int displayChoice;
-    cout << "Do you want to display the contents of the files? (1-yes, 2-no): ";
-    cout << endl;
-    cin >> displayChoice;
-    cout << endl;
-
-    if (displayChoice == 1) {
-        displayFileContents("input.txt");
-        displayFileContents("output_day.txt");
-        displayFileContents("output_night.txt");
-    }
-
-    ofstream clearInputFile(DIRECTORY_PATH + "input.txt");
-    clearInputFile.close();
-
-    ofstream clearOutputDay(DIRECTORY_PATH + "output_day.txt");
-    clearOutputDay.close();
-
-    ofstream clearOutputNight(DIRECTORY_PATH + "output_night.txt");
-    clearOutputNight.close();
-
+    cout << "\nDay Time file: " << endl;
+    read_output_file("daytime_calls.bin");
+    cout << "Night Time file: " << endl;
+    read_output_file("nighttime_calls.bin");
     return 0;
 }
